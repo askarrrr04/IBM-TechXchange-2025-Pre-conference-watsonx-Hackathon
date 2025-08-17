@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Карта пунктов приёма отходов</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css" />
+
+</head>
+<body>
+  <div class="page-wrapper">
+    <div id="navbar" role="region" aria-label="Фильтры и действия">
+      <div class="left">
+        <h1 id="appTitle">Карта пунктов приёма отходов</h1>
+        <div class="search-wrap">
+          <input id="searchInput" type="text" placeholder="Поиск адреса или пункта..." aria-label="Поиск" />
+          <button id="searchButton" type="button">Поиск</button>
+          <div id="searchResults" role="listbox" aria-label="Результаты поиска"></div>
+        </div>
+      </div>
+
+      <div class="label">
+        <span id="filterLabel">Фильтр:</span>
+        <select id="typeFilter" aria-label="Фильтр по типам отходов">
+          <option value="">Все</option>
+          <option value="пластик">Пластик</option>
+          <option value="бумага">Бумага</option>
+          <option value="металл">Металл</option>
+          <option value="стекло">Стекло</option>
+          <option value="электроника">Электроника</option>
+        </select>
+      </div>
+
+      <div class="right">
+        <div class="label">
+          <span id="langLabel">Язык:</span>
+          <select id="langSelect" aria-label="Выбор языка">
+            <option value="ru">Рус</option>
+            <option value="kk">Қаз</option>
+            <option value="en">Eng</option>
+          </select>
+        </div>
+
+        <div class="fav-wrap">
+          <button id="favoritesBtn" type="button">★ <span id="favoritesBtnText">Избранное</span></button>
+          <div id="favoritesDropdown" aria-label="Список избранных пунктов"></div>
+        </div>
+
+        <button id="themeToggle" type="button">🌓</button>
+        <button id="photoButton" class="primary" type="button">Определить по фото (ИИ)</button>
+        <input type="file" id="photoInput" accept="image/*" style="display:none" />
+      </div>
+    </div>
+
+    <main id="map" role="region" aria-label="Карта пунктов приёма отходов"></main>
+
+    <section id="infoPanel" aria-live="polite" aria-hidden="true">
+      <button id="closeInfoButton" aria-label="Закрыть панель" title="Закрыть">×</button>
+
+      <div id="infoHeader">
+        <button id="favoriteButton" type="button" title="В избранное">★</button>
+        <h2 id="infoName"></h2>
+      </div>
+
+      <p><strong id="typesLabel">Типы приёма:</strong> <span id="infoTypes"></span></p>
+      <p><strong id="scheduleLabel">График работы:</strong> <span id="infoSchedule"></span></p>
+      <p><strong id="descLabel">Описание:</strong> <span id="infoDescription">Удобное место для сдачи вторсырья в Астане.</span></p>
+
+      <div class="rating">
+        <div class="avg">
+          <span id="avgLabel">Средняя оценка:</span>
+          <span class="badge"><span aria-hidden="true">⭐</span> <span id="avgScore">—</span> <span id="ratingCount" style="color:var(--muted);font-weight:600;"></span></span>
+        </div>
+        <div class="rating-stars" id="ratingStars" role="radiogroup" aria-label="Оценка пункта">
+          <button type="button" aria-label="1 звезда" data-value="1">★</button>
+          <button type="button" aria-label="2 звезды" data-value="2">★</button>
+          <button type="button" aria-label="3 звезды" data-value="3">★</button>
+          <button type="button" aria-label="4 звезды" data-value="4">★</button>
+          <button type="button" aria-label="5 звёзд" data-value="5">★</button>
+        </div>
+        <small id="rateHint">Нажмите на звезду, чтобы поставить оценку</small>
+      </div>
+
+      <div class="comments">
+        <strong id="commentsTitle">Отзывы</strong>
+        <div class="comment-form">
+          <textarea id="commentInput" rows="2" placeholder="Напишите короткий отзыв..."></textarea>
+          <button id="submitComment" type="button">Отправить</button>
+        </div>
+        <ul id="commentsList"></ul>
+      </div>
+
+      <div id="result"></div>
+
+      <div class="actions">
+        <button id="routeButton" type="button">Построить маршрут сюда</button>
+        <button id="clearRouteButton" type="button">Удалить маршрут</button>
+      </div>
+
+      <div class="extnav">
+        <a id="openGoogle" href="#" target="_blank" rel="noopener">Google Maps</a>
+        <a id="openYandex" href="#" target="_blank" rel="noopener">Яндекс.Карты</a>
+      </div>
+
+      <button id="hideInfoButton" type="button">Закрыть</button>
+    </section>
+  </div>
+
+  <!-- External JS -->
+  <script src="script.js"></script>
+</body>
+</html>
