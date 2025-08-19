@@ -40,7 +40,7 @@ markdown
   - Uses IBM Watsonx/Cloud integration
 - **Python APIs** (`api.py`, `api2.py`) for running inference.
 
----
+---https://www.youtube.com/watch?v=rdguKTRwYmk
 
 ## ⚙️ Installation
 
